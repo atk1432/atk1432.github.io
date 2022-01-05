@@ -7,6 +7,17 @@
 body {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar {
+    background-color: rgba(0, 0, 0, 0.05);
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(51, 51, 51, 0.705);
+    border-radius: 15px;
 }
 
 .app {
@@ -42,6 +53,22 @@ body {
     font-size: 8px;
 }
 
+.align-item {
+    display: flex;
+    align-items: center;
+}
+
+.now-playing {
+    margin-top: 4px;
+    margin-bottom: -10px;
+}
+
+.music-player {
+    background-color: #fff;
+    border-radius: 15px;
+    margin-top: 8px;
+}
+
 .music-player__body {
     margin: 24px 0;
 }
@@ -56,8 +83,10 @@ body {
     justify-content: space-evenly;
     align-items: center;
     margin-top: 24px;
+    padding-bottom: 18px;
 }
 
+.icon-hover,
 .music-player__footer-icon {
     opacity: 0.6;
     font-size: 16px;
@@ -69,6 +98,7 @@ body {
     user-select: none;
 }
 
+.icon-hover:hover,
 .music-player__footer-icon:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -120,4 +150,48 @@ body {
     transform: scale(1.6);
     box-shadow: rgba(0, 0, 0, 0.9);
     cursor: pointer;
+}
+
+.all-songs {
+    margin-top: 24px;
+}
+
+.song {
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    margin: 12px 0;
+}
+
+.song__img {
+    width: 60px;
+    border-radius: 100%;
+}
+
+.song__body {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.song__body-header {
+    font-size: 16px;
+}
+
+.song__body-artist {
+    font-size: 14px;
+}
+
+.song__info {
+    margin-right: -10px;
+}
+
+.line-wrap {
+    justify-content: space-around;
+}
+
+.line {
+    margin: 34px 0;
+    width: 30%;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
 }
