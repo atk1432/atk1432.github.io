@@ -105,7 +105,11 @@ body {
 }
 
 .music-player__footer-pause {
-    padding: 16px 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ff5a00;
     color: #fff;
     border-radius: 100%;
