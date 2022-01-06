@@ -11,18 +11,19 @@ body {
 }
 
 ::-webkit-scrollbar {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #fff;
     width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(51, 51, 51, 0.705);
+    background-color: rgba(0, 0, 0, 0.75);
     border-radius: 15px;
 }
 
 .app {
     max-width: 768px;
     margin: auto;
+    padding-bottom: 60px;
 }
 
 .grid {
@@ -161,6 +162,14 @@ body {
     background-color: #fff;
     border-radius: 15px;
     margin: 12px 0;
+    box-shadow: 0 0 10px #ccc;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.song:hover {
+    background-color: #ff0b0b;
+    color: #fff;
 }
 
 .song__img {
@@ -183,6 +192,9 @@ body {
 
 .song__info {
     margin-right: -10px;
+    font-size: 20px;
+    transition-duration: 0.2s;
+    opacity: 1;
 }
 
 .line-wrap {
@@ -194,4 +206,42 @@ body {
     width: 30%;
     height: 2px;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.music-footer {
+    position: fixed;
+    z-index: 99;
+    background-color: rgb(53, 53, 53);
+    padding: 5px 10px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.music-footer-wrap {
+    justify-content: space-evenly;
+}
+
+.music-footer__icon {
+    color: #ccc;
+    opacity: 0.5;
+    padding: 14px 18px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.music-footer__icon:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.music-footer__icon-pause {
+    background-color: #d32323;
+    color: #333;
+    opacity: 1;
+}
+
+.music-footer__icon-pause:hover {
+    color: #fff;
+    background-color: #ff0b0b;
 }
