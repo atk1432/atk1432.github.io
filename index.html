@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="shortcut icon" href="#">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300&family=Poppins:ital,wght@0,300;0,400;1,400&family=Spline+Sans:wght@500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,27 +14,27 @@
     </head>
     <body>
         <div class="app">
-            <div class="music-player grid">
-                <h5 class="red-color-text small-text center now-playing">Now playing</h5>
-                <div class="music-player__header space-between align-item">
-                    <i class="fas fa-angle-down icon-hover"></i>
-                    <h4 class="music-player__header-text">Faded</h4>
-                    <i class="fas fa-plus icon-hover"></i>
-                </div>
-                <div class="music-player__body center">
-                    <img src="./assets/img/faded.jpeg" alt="" class="music-player__body-cd">
-                </div>
-                <div class="music-player__tab">
-                    <div class="music-player__tab-head">
-                        <div class="music-player__tab-head-after"></div>
+            <div class="music-player-wrap">
+                <div class="music-player grid">
+                    <h5 class="red-color-text small-text center now-playing">Now playing</h5>
+                    <div class="music-player__header space-between align-item">
+                        <i class="fas fa-angle-down icon-hover"></i>
+                        <h4 class="music-player__header-text">Faded</h4>
+                        <i class="fas fa-plus icon-hover"></i>
                     </div>
-                </div>
-                <div class="music-player__footer">
-                    <i class="fas fa-reply music-player__footer-icon"></i>
-                    <i class="fas fa-step-backward music-player__footer-icon"></i>
-                    <i class="fas fa-play music-player__footer-pause"></i>
-                    <i class="fas fa-step-forward music-player__footer-icon"></i>
-                    <i class="fas fa-random music-player__footer-icon"></i>
+                    <div class="music-player__body center">
+                        <img src="./assets/img/faded.jpeg" alt="" class="music-player__body-cd">
+                    </div>
+                    
+                    <input type="range" class="music-player__tab" value="0">
+
+                    <div class="music-player__footer">
+                        <i class="fas fa-reply music-player__footer-icon"></i>
+                        <i class="fas fa-step-backward music-player__footer-icon"></i>
+                        <i class="fas fa-play music-player__footer-pause"></i>
+                        <i class="fas fa-step-forward music-player__footer-icon"></i>
+                        <i class="fas fa-random music-player__footer-icon"></i>
+                    </div>
                 </div>
             </div>
             <div class="line-wrap align-item grid">
@@ -88,6 +89,7 @@
         <audio controls style="margin-bottom: 60px;">    
             <source src="./assets/music/Faded-AlanWalker-5919763.mp3">
         </audio>
-        <script src="./assets/js/base.js"></script>
+        <!-- <script src="./assets/js/base.js"></script> -->
+        <script src="./assets/js/index.js"></script>
     </body>
 </html>
