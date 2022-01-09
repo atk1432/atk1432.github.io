@@ -61,9 +61,34 @@ const app = {
             cd.style.opacity = cdScroll / cdSize
         }
     },
+    getSong: function(song) {
+        var audio = $('audio')
+        var songHeader = $('.music-player__header-text')
+        var songImg = $('.music-player__body-cd')
+
+        // Load source of music
+        audio.children[0].src = song.songUrl
+        audio.load();
+
+        // Change the name and image of $('.music-player')
+        songHeader.textContent = song.song
+        songImg.src = song.imgUrl
+    },
+    getCurrentSong: function() {
+        var playlist = $('.all-songs').children
+        
+        for (var i = 0; i < playlist.length; i++) {
+            playlist[i].onclick = function(e) {
+                app.getSong(app.songs[Array.from(playlist).indexOf(this)])
+                window.scrollTo(0, 0)
+            }
+        }
+    },
     start: function() {
         this.render()
         this.handleEvents()
+        this.getCurrentSong()
+        this.getSong(this.songs[0])
     }
 }
 
