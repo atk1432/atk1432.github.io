@@ -259,6 +259,12 @@ body {
     background-color: #d32323;
     color: #333;
     opacity: 1;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .music-footer__icon-pause:hover {

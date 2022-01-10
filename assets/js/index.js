@@ -9,6 +9,10 @@ musicTab.oninput = function() {
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 
+const audio = $('audio')
+const pause = $('.music-player__footer-pause')
+const pause2 = $('.music-footer__icon-pause')
+
 const app = {
     songs: [
         {
@@ -49,6 +53,8 @@ const app = {
         var cd = $('.music-player__body-cd')
         var cdSize = cd.offsetWidth   
         var scroll, cdScroll
+
+        // When user scroll down ...
         document.onscroll = function(e) {
             scroll = document.documentElement.scrollTop
             if (cdSize - scroll <= 0) {
@@ -60,9 +66,12 @@ const app = {
             cd.style.height = cdScroll + 'px'
             cd.style.opacity = cdScroll / cdSize
         }
+
+        // There are different event listeners:
+        this.getCurrentSong() // Get song when user click a song
+        this.playSong() // Play song when user click button
     },
     getSong: function(song) {
-        var audio = $('audio')
         var songHeader = $('.music-player__header-text')
         var songImg = $('.music-player__body-cd')
 
@@ -73,6 +82,9 @@ const app = {
         // Change the name and image of $('.music-player')
         songHeader.textContent = song.song
         songImg.src = song.imgUrl
+
+        this.processChangeIcon(pause, 'fa-pause', 'fa-play')
+        this.processChangeIcon(pause2, 'fa-pause', 'fa-play')
     },
     getCurrentSong: function() {
         var playlist = $('.all-songs').children
@@ -84,10 +96,53 @@ const app = {
             }
         }
     },
+    playSong: function() {
+        pause.onclick = pause2.onclick = function() {
+            // audio.play()
+            processMusic()
+        }
+
+        audio.onended = function() {
+            stop()
+        }
+
+        document.onkeydown = function(e) {
+            if (e.code == 'Space') {
+                e.preventDefault()
+                processMusic()
+            }
+        }
+
+        function processMusic() {
+            if (audio.paused) {
+                play()
+            } else {
+                stop()
+            }
+        }
+
+        function play() {
+            app.processChangeIcon(pause, 'fa-play', 'fa-pause')
+            app.processChangeIcon(pause2, 'fa-play', 'fa-pause')
+            audio.play()
+        }
+
+        function stop() {
+            app.processChangeIcon(pause, 'fa-pause', 'fa-play')
+            app.processChangeIcon(pause2, 'fa-pause', 'fa-play')
+            audio.pause()
+        }
+    },
+    processChangeIcon: function(element, remove, add) {
+        element.classList.remove(remove)
+        element.classList.add(add)
+    },
     start: function() {
-        this.render()
-        this.handleEvents()
-        this.getCurrentSong()
+        this.render()  // Render html playlist
+        this.handleEvents() // Handle events: play song, scroll, ... and lot of event listener 
+
+
+        // Get song started
         this.getSong(this.songs[0])
     }
 }
