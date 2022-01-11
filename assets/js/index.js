@@ -32,6 +32,12 @@ const app = {
             imgUrl: './assets/img/aloneM.jpg',
             artist: 'Marshmello',
             song: 'Alone'
+        },
+        {
+            songUrl: './assets/music/Silence-MarshmelloKhalid-5170091.mp3',
+            imgUrl: './assets/img/slience.jpg',
+            artist: 'Marshmello',
+            song: 'Silence'
         }
     ],
     render: function() {
@@ -80,7 +86,7 @@ const app = {
         audio.load();
 
         // Change the name and image of $('.music-player')
-        songHeader.textContent = song.song
+        songHeader.textContent = song.song + ' - ' + song.artist
         songImg.src = song.imgUrl
 
         this.processChangeIcon(pause, 'fa-pause', 'fa-play')
@@ -97,13 +103,24 @@ const app = {
         }
     },
     playSong: function() {
+        var nowPlaying = $('.now-playing')
+        var currentTime;
+
         pause.onclick = pause2.onclick = function() {
-            // audio.play()
             processMusic()
         }
 
         audio.onended = function() {
             stop()
+        }
+
+        audio.ontimeupdate = function() {
+            currentTime = Math.floor(this.currentTime / this.duration * 100)
+            if (Number.isNaN(currentTime)) {
+                currentTime = 0
+            }
+            musicTab.value = currentTime
+            musicTab.style.backgroundSize = currentTime + '%'
         }
 
         document.onkeydown = function(e) {
@@ -124,12 +141,14 @@ const app = {
         function play() {
             app.processChangeIcon(pause, 'fa-play', 'fa-pause')
             app.processChangeIcon(pause2, 'fa-play', 'fa-pause')
+            nowPlaying.style.display = 'flex'
             audio.play()
         }
 
         function stop() {
             app.processChangeIcon(pause, 'fa-pause', 'fa-play')
             app.processChangeIcon(pause2, 'fa-pause', 'fa-play')
+            nowPlaying.style.display = 'none'
             audio.pause()
         }
     },
