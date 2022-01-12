@@ -1,9 +1,9 @@
 // Movement of tab
-var musicTab = document.querySelector('.music-player__tab')
 
-musicTab.oninput = function() {
-    this.style.backgroundSize = this.value + '%'
-}
+
+// musicTab.oninput = function() {
+//     this.style.backgroundSize = this.value + '%'
+// }
 
 // Main
 const $ = document.querySelector.bind(document)
@@ -104,7 +104,11 @@ const app = {
     },
     playSong: function() {
         var nowPlaying = $('.now-playing')
+        var musicTab = document.querySelector('.music-player__tab')
+        var cd = $('.music-player__body-cd')
+        var cdPlay;
         var currentTime;
+        // cd.pause()
 
         pause.onclick = pause2.onclick = function() {
             processMusic()
@@ -123,6 +127,19 @@ const app = {
             musicTab.style.backgroundSize = currentTime + '%'
         }
 
+        audio.onloadedmetadata = function() {
+            cdPlay = cd.animate([
+                {transform: 'rotate(360deg)'}
+            ], {
+                duration: audio.duration * 1000
+            })
+            cdPlay.pause()
+        }
+
+        musicTab.oninput = function() {
+            audio.currentTime = this.value / 100 * audio.duration
+        }
+
         document.onkeydown = function(e) {
             if (e.code == 'Space') {
                 e.preventDefault()
@@ -133,8 +150,10 @@ const app = {
         function processMusic() {
             if (audio.paused) {
                 play()
+                cdPlay.play()
             } else {
                 stop()
+                cdPlay.pause()
             }
         }
 
