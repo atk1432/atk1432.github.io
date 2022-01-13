@@ -12,6 +12,20 @@ const $$ = document.querySelectorAll.bind(document)
 const audio = $('audio')
 const pause = $('.music-player__footer-pause')
 const pause2 = $('.music-footer__icon-pause')
+const cd = $('.music-player__body-cd')
+const playlist = $('.all-songs').children   
+
+var cdPlay, currentSong = 0
+
+
+cdPlay = cd.animate([
+    {transform: 'rotate(360deg)'}
+], {
+    duration: 20000,
+    iterations: Infinity
+})
+cdPlay.pause()
+
 
 const app = {
     songs: [
@@ -19,25 +33,29 @@ const app = {
             songUrl: './assets/music/Faded-AlanWalker-5919763.mp3',
             imgUrl: './assets/img/faded.jpeg',
             artist: 'Alan Walker',
-            song: 'Faded' 
+            song: 'Faded',
+            id: 1
         },
         {
             songUrl: './assets/music/Alone - Alan Walker_ Noonie Bao.mp3',
             imgUrl: './assets/img/alone.jpg',
             artist: 'Alan Walker',
-            song: 'Alone'
+            song: 'Alone',
+            id: 2
         },
         {
             songUrl: './assets/music/Alone - Marshmello.mp3',
             imgUrl: './assets/img/aloneM.jpg',
             artist: 'Marshmello',
-            song: 'Alone'
+            song: 'Alone',
+            id: 3
         },
         {
             songUrl: './assets/music/Silence-MarshmelloKhalid-5170091.mp3',
             imgUrl: './assets/img/slience.jpg',
             artist: 'Marshmello',
-            song: 'Silence'
+            song: 'Silence',
+            id: 4
         }
     ],
     render: function() {
@@ -77,6 +95,7 @@ const app = {
         this.getCurrentSong() // Get song when user click a song
         this.playSong() // Play song when user click button
     },
+    // get a song
     getSong: function(song) {
         var songHeader = $('.music-player__header-text')
         var songImg = $('.music-player__body-cd')
@@ -91,23 +110,33 @@ const app = {
 
         this.processChangeIcon(pause, 'fa-pause', 'fa-play')
         this.processChangeIcon(pause2, 'fa-pause', 'fa-play')
-    },
-    getCurrentSong: function() {
-        var playlist = $('.all-songs').children
         
+    },
+    // getCurrentSong will listen onclick a song, then get song
+    getCurrentSong: function() {
         for (var i = 0; i < playlist.length; i++) {
             playlist[i].onclick = function(e) {
-                app.getSong(app.songs[Array.from(playlist).indexOf(this)])
+                currentSong = Array.from(playlist).indexOf(this)
+                app.getSong(app.songs[currentSong])
                 window.scrollTo(0, 0)
+                cdPlay.cancel()
             }
         }
+
+    },
+    nextSong: function() {
+        if (currentSong + 1 >= playlist.length) {
+            currentSong = 0
+        } else {
+            currentSong += 1
+        }
+        this.getSong(this.songs[currentSong])
+    
     },
     playSong: function() {
         var nowPlaying = $('.now-playing')
         var musicTab = document.querySelector('.music-player__tab')
-        var cd = $('.music-player__body-cd')
-        var cdPlay;
-        var currentTime;
+        var currentTime, audioDuration;
         // cd.pause()
 
         pause.onclick = pause2.onclick = function() {
@@ -116,6 +145,8 @@ const app = {
 
         audio.onended = function() {
             stop()
+            app.nextSong()
+            cdPlay.cancel()
         }
 
         audio.ontimeupdate = function() {
@@ -125,19 +156,15 @@ const app = {
             }
             musicTab.value = currentTime
             musicTab.style.backgroundSize = currentTime + '%'
-        }
-
-        audio.onloadedmetadata = function() {
-            cdPlay = cd.animate([
-                {transform: 'rotate(360deg)'}
-            ], {
-                duration: audio.duration * 1000
-            })
-            cdPlay.pause()
-        }
+        }    
 
         musicTab.oninput = function() {
-            audio.currentTime = this.value / 100 * audio.duration
+            audioDuration = audio.duration
+            if (!audioDuration) {
+                musicTab.value = 0
+                return
+            }
+            audio.currentTime = this.value / 100 * audioDuration
         }
 
         document.onkeydown = function(e) {
