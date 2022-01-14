@@ -1,10 +1,3 @@
-// Movement of tab
-
-
-// musicTab.oninput = function() {
-//     this.style.backgroundSize = this.value + '%'
-// }
-
 // Main
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
@@ -14,8 +7,12 @@ const pause = $('.music-player__footer-pause')
 const pause2 = $('.music-footer__icon-pause')
 const cd = $('.music-player__body-cd')
 const playlist = $('.all-songs').children   
+const nowPlaying = $('.now-playing')
+const musicTab = $('.music-player__tab')
 
+var currentTime, audioDuration;
 var cdPlay, currentSong = 0
+
 
 
 cdPlay = cd.animate([
@@ -94,6 +91,8 @@ const app = {
         // There are different event listeners:
         this.getCurrentSong() // Get song when user click a song
         this.playSong() // Play song when user click button
+        this.changeNextSong() // Change a song when user touch button next or back
+        // this.rewindSong()
     },
     // get a song
     getSong: function(song) {
@@ -110,6 +109,7 @@ const app = {
 
         this.processChangeIcon(pause, 'fa-pause', 'fa-play')
         this.processChangeIcon(pause2, 'fa-pause', 'fa-play')
+        
         
     },
     // getCurrentSong will listen onclick a song, then get song
@@ -133,10 +133,28 @@ const app = {
         this.getSong(this.songs[currentSong])
     
     },
+    backSong: function() {
+        if (currentSong - 1 < 0) {
+            currentSong = playlist.length - 1
+        } else {
+            currentSong -= 1
+        }
+        this.getSong(this.songs[currentSong])
+    },
+    changeNextSong: function() {
+        const backButton = $$('.music-player__footer-icon')[1]
+        const nextButton = $$('.music-player__footer-icon')[2]
+
+        nextButton.onclick = function() {
+            app.nextSong()
+            cdPlay.cancel()
+        }
+        backButton.onclick = function() {
+            app.backSong()
+            cdPlay.cancel()
+        }
+    },
     playSong: function() {
-        var nowPlaying = $('.now-playing')
-        var musicTab = document.querySelector('.music-player__tab')
-        var currentTime, audioDuration;
         // cd.pause()
 
         pause.onclick = pause2.onclick = function() {
@@ -167,10 +185,13 @@ const app = {
             audio.currentTime = this.value / 100 * audioDuration
         }
 
+        // Process button on keyboard
         document.onkeydown = function(e) {
             if (e.code == 'Space') {
                 e.preventDefault()
                 processMusic()
+            } else {
+                app.keyboardControl(e.code)
             }
         }
 
@@ -198,6 +219,20 @@ const app = {
             audio.pause()
         }
     },
+    randomSong: function() {
+        const randomButton = $$('.music-player__footer-icon')[3]
+
+        console.log(randomButton)
+    },
+    keyboardControl: function(key) {
+        if (key == 'ArrowLeft') {
+            // console.log(key)
+            audio.currentTime -= 5
+        } else if (key == 'ArrowRight') {
+            audio.currentTime += 5
+            // console.log(currentTime)
+        }
+    },
     processChangeIcon: function(element, remove, add) {
         element.classList.remove(remove)
         element.classList.add(add)
@@ -206,10 +241,13 @@ const app = {
         this.render()  // Render html playlist
         this.handleEvents() // Handle events: play song, scroll, ... and lot of event listener 
 
-
         // Get song started
         this.getSong(this.songs[0])
     }
 }
 
-app.start()
+// audio.onloadedmetadata = function() {
+//     console.log('sdfdsf')
+// }
+app.start() 
+
