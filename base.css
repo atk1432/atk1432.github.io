@@ -15,7 +15,8 @@ body {
     width: 5px;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb:horizontal,
+::-webkit-scrollbar-thumb:vertical {
     background-color: rgba(0, 0, 0, 0.75);
     border-radius: 15px;
 }
@@ -77,6 +78,7 @@ body {
     width: 100%;
     max-width: 768px;
     z-index: 99;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
 }
 
 .music-player {

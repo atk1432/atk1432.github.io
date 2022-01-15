@@ -10,7 +10,8 @@ const playlist = $('.all-songs').children
 const nowPlaying = $('.now-playing')
 const musicTab = $('.music-player__tab')
 
-var currentTime, audioDuration;
+var currentTime, audioDuration, indexRandom;
+var isRandom = false, isRepeat = false
 var cdPlay, currentSong = 0
 
 
@@ -92,7 +93,7 @@ const app = {
         this.getCurrentSong() // Get song when user click a song
         this.playSong() // Play song when user click button
         this.changeNextSong() // Change a song when user touch button next or back
-        // this.rewindSong()
+        this.randomSong()
     },
     // get a song
     getSong: function(song) {
@@ -109,8 +110,6 @@ const app = {
 
         this.processChangeIcon(pause, 'fa-pause', 'fa-play')
         this.processChangeIcon(pause2, 'fa-pause', 'fa-play')
-        
-        
     },
     // getCurrentSong will listen onclick a song, then get song
     getCurrentSong: function() {
@@ -146,11 +145,19 @@ const app = {
         const nextButton = $$('.music-player__footer-icon')[2]
 
         nextButton.onclick = function() {
-            app.nextSong()
+            if (isRandom) {
+                app.changeRandomSong()
+            } else {
+                app.nextSong()
+            }
             cdPlay.cancel()
         }
         backButton.onclick = function() {
-            app.backSong()
+            if (isRandom) {
+                app.changeRandomSong()
+            } else {
+                app.backSong()
+            }
             cdPlay.cancel()
         }
     },
@@ -162,8 +169,12 @@ const app = {
         }
 
         audio.onended = function() {
-            stop()
-            app.nextSong()
+            if (isRandom) {
+                app.changeRandomSong()
+            } else {
+                stop()
+                app.nextSong()
+            }
             cdPlay.cancel()
         }
 
@@ -175,6 +186,20 @@ const app = {
             musicTab.value = currentTime
             musicTab.style.backgroundSize = currentTime + '%'
         }    
+
+        audio.onplay = function() {
+            app.processChangeIcon(pause, 'fa-play', 'fa-pause')
+            app.processChangeIcon(pause2, 'fa-play', 'fa-pause')
+            nowPlaying.style.display = 'flex'
+            cdPlay.play()
+        }
+
+        audio.onpause = function() {
+            app.processChangeIcon(pause, 'fa-pause', 'fa-play')
+            app.processChangeIcon(pause2, 'fa-pause', 'fa-play')
+            nowPlaying.style.display = 'none'
+            cdPlay.pause()
+        }
 
         musicTab.oninput = function() {
             audioDuration = audio.duration
@@ -206,23 +231,46 @@ const app = {
         }
 
         function play() {
-            app.processChangeIcon(pause, 'fa-play', 'fa-pause')
-            app.processChangeIcon(pause2, 'fa-play', 'fa-pause')
-            nowPlaying.style.display = 'flex'
             audio.play()
         }
 
         function stop() {
-            app.processChangeIcon(pause, 'fa-pause', 'fa-play')
-            app.processChangeIcon(pause2, 'fa-pause', 'fa-play')
-            nowPlaying.style.display = 'none'
             audio.pause()
         }
     },
     randomSong: function() {
         const randomButton = $$('.music-player__footer-icon')[3]
 
-        console.log(randomButton)
+        randomButton.onclick = function() {
+            if (this.classList.contains('red-color-text')) {
+                this.classList.remove('red-color-text')
+                isRandom = false
+            } else {
+                this.classList.add('red-color-text')
+                isRandom = true
+            }
+        }
+    },
+    changeRandomSong: function() {
+        do {    
+            indexRandom = Math.round(Math.random() * (playlist.length - 1))
+        } while (indexRandom == currentSong)
+        
+        this.getSong(this.songs[indexRandom])
+        currentSong = indexRandom
+    },
+    repeatSong: function() {
+        const repeatButton = $$('.music-player__footer-icon')[0]
+
+        repeatButton.onclick = function() {
+            if (this.classList.contains('red-color-text')) {
+                this.classList.remove('red-color-text')
+                isRepeat = false
+            } else {
+                this.classList.add('red-color-text')
+                isRepeat = true
+            }
+        }
     },
     keyboardControl: function(key) {
         if (key == 'ArrowLeft') {
@@ -243,11 +291,10 @@ const app = {
 
         // Get song started
         this.getSong(this.songs[0])
+
     }
 }
 
-// audio.onloadedmetadata = function() {
-//     console.log('sdfdsf')
-// }
+
 app.start() 
 
