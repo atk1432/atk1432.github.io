@@ -15,7 +15,6 @@ var isRandom = false, isRepeat = false
 var cdPlay, currentSong = 0
 
 
-
 cdPlay = cd.animate([
     {transform: 'rotate(360deg)'}
 ], {
@@ -95,18 +94,43 @@ const app = {
         this.changeNextSong() // Change a song when user touch button next or back
         this.randomSong()
     },
+    convertMMSS: function(seconds) {
+        var minutes = seconds / 60; minutes = Math.round(minutes * 100) / 100 + ''
+        var sec_num =  parseFloat( '0' + minutes.slice( minutes.indexOf('.') )) * 60
+        sec_num = Math.round(sec_num)
+        
+        if (sec_num >= 60) {
+            sec_num = 0
+        }
+
+        if (sec_num < 10) {
+            sec_num = '0' + sec_num
+        }
+
+        if (minutes.indexOf('.') <= 1) {
+            return '0' + minutes[0] + ':' + sec_num
+        } else {
+            return Math.round(minutes) + ':' + sec_num
+        }
+    },
     // get a song
     getSong: function(song) {
         var songHeader = $('.music-player__header-text')
         var songImg = $('.music-player__body-cd')
+        var dTime = $('.music-player-t__duration')
 
         // Load source of music
         audio.children[0].src = song.songUrl
         audio.load();
 
+        audio.onloadedmetadata = function() {
+            dTime.textContent = app.convertMMSS(Math.round(audio.duration))
+        }
+
         // Change the name and image of $('.music-player')
         songHeader.textContent = song.song + ' - ' + song.artist
         songImg.src = song.imgUrl
+
 
         this.processChangeIcon(pause, 'fa-pause', 'fa-play')
         this.processChangeIcon(pause2, 'fa-pause', 'fa-play')
@@ -162,7 +186,7 @@ const app = {
         }
     },
     playSong: function() {
-        // cd.pause()
+        var cTime = $('.music-player-t__current')
 
         pause.onclick = pause2.onclick = function() {
             processMusic()
@@ -183,6 +207,7 @@ const app = {
             if (Number.isNaN(currentTime)) {
                 currentTime = 0
             }
+            cTime.textContent = app.convertMMSS(Math.round(this.currentTime)) || app.convertMMSS(0)
             musicTab.value = currentTime
             musicTab.style.backgroundSize = currentTime + '%'
         }    

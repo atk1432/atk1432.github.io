@@ -87,19 +87,6 @@ body {
     position: relative;
 }
 
-.music-player__body {
-    /* margin: 24px 0; */
-}
-
-/* .now-playing,
-.music-player__header {
-    position: fixed;
-    max-width: 768px;
-    width: 100%;
-    margin: auto;
-    transform: translateX(-11px);
-} */
-
 .music-player__body-cd {
     border-radius: 100%;
     user-select: none;
@@ -276,4 +263,23 @@ body {
 .music-footer__icon-pause:hover {
     color: #fff;
     background-color: #ff0b0b;
+}
+
+.music-player-t {
+    display: flex;
+    align-items: center;
+}
+
+.music-player-t span {
+    font-size: 14px;
+}
+
+.music-player-t__duration ,
+.music-player-t__current {
+    width: 60px;
+}
+
+.music-player-t__duration {
+    display: flex;
+    justify-content: flex-end;
 }
