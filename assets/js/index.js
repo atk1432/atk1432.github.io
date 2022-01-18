@@ -95,22 +95,24 @@ const app = {
         this.randomSong()
     },
     convertMMSS: function(seconds) {
-        var minutes = seconds / 60; minutes = Math.round(minutes * 100) / 100 + ''
-        var sec_num =  parseFloat( '0' + minutes.slice( minutes.indexOf('.') )) * 60
-        sec_num = Math.round(sec_num)
-        
-        if (sec_num >= 60) {
-            sec_num = 0
-        }
+        if (seconds < 3600) {
+            var minutes = Math.round((Math.round(seconds) / 60) * 100) / 100
+            var minuteNumber = Math.floor(minutes)
+            var secNum = Math.round((minutes - minuteNumber) * 100) / 100; 
+            secNum = Math.round(secNum * 60)
+            var clock = [minuteNumber, secNum]
+            clock.forEach((e, i) => {
+                if (e < 10) {
+                    clock[i] = '0' + clock[i]
+                }
+            })
+            var result = clock[0] + ':' + clock[1]
 
-        if (sec_num < 10) {
-            sec_num = '0' + sec_num
-        }
-
-        if (minutes.indexOf('.') <= 1) {
-            return '0' + minutes[0] + ':' + sec_num
+            return result
         } else {
-            return Math.round(minutes) + ':' + sec_num
+            var hours = Math.round((seconds / 3600) * 100) / 100
+            var result = hours
+            return result
         }
     },
     // get a song
@@ -124,7 +126,8 @@ const app = {
         audio.load();
 
         audio.onloadedmetadata = function() {
-            dTime.textContent = app.convertMMSS(Math.round(audio.duration))
+            // dTime.textContent = app.convertMMSS(audio.duration)
+            dTime.textContent = app.convertMMSS(3661)
         }
 
         // Change the name and image of $('.music-player')
@@ -207,7 +210,7 @@ const app = {
             if (Number.isNaN(currentTime)) {
                 currentTime = 0
             }
-            cTime.textContent = app.convertMMSS(Math.round(this.currentTime)) || app.convertMMSS(0)
+            cTime.textContent = app.convertMMSS(this.currentTime) || app.convertMMSS(0)
             musicTab.value = currentTime
             musicTab.style.backgroundSize = currentTime + '%'
         }    
