@@ -93,6 +93,7 @@ const app = {
         this.playSong() // Play song when user click button
         this.changeNextSong() // Change a song when user touch button next or back
         this.randomSong()
+        this.repeatSong()
     },
     convertMMSS: function(seconds) {
         if (seconds < 3600) {
@@ -110,9 +111,16 @@ const app = {
 
             return result
         } else {
-            var hours = Math.round((seconds / 3600) * 100) / 100
-            var result = hours
-            return result
+            var hours = Math.floor(seconds / 3600) 
+            var minutes = Math.floor(seconds / 60) - hours * 60
+            var sec_num = seconds - (hours * 3600 + minutes * 60) 
+            var clock = [hours, minutes, sec_num]
+            clock.forEach((e, i) => {
+                if (e < 10) {
+                    clock[i] = '0' + clock[i]
+                }
+            })
+            return clock.join(':')
         }
     },
     // get a song
@@ -120,14 +128,21 @@ const app = {
         var songHeader = $('.music-player__header-text')
         var songImg = $('.music-player__body-cd')
         var dTime = $('.music-player-t__duration')
+        var songList = $$('.song')
 
         // Load source of music
         audio.children[0].src = song.songUrl
         audio.load();
 
+        songList.forEach((e) => {
+            e.classList.remove('song-active')
+        })
+        songList[song.id - 1].classList.add('song-active')
+        songList[song.id -1].scrollIntoView({block: 'center'})
+
         audio.onloadedmetadata = function() {
-            // dTime.textContent = app.convertMMSS(audio.duration)
-            dTime.textContent = app.convertMMSS(3661)
+            dTime.textContent = app.convertMMSS(audio.duration)
+            // dTime.textContent = app.convertMMSS(4000)
         }
 
         // Change the name and image of $('.music-player')
@@ -144,7 +159,7 @@ const app = {
             playlist[i].onclick = function(e) {
                 currentSong = Array.from(playlist).indexOf(this)
                 app.getSong(app.songs[currentSong])
-                window.scrollTo(0, 0)
+                // window.scrollTo(0, 0)
                 cdPlay.cancel()
             }
         }
@@ -198,6 +213,8 @@ const app = {
         audio.onended = function() {
             if (isRandom) {
                 app.changeRandomSong()
+            } else if (isRepeat) {
+                app.getSong(app.songs[currentSong])
             } else {
                 stop()
                 app.nextSong()

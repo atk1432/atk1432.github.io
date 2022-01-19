@@ -4,6 +4,10 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
@@ -177,6 +181,7 @@ body {
     transition-duration: 0.2s;
 }
 
+.song-active,
 .song:hover {
     background-color: #ff0b0b;
     color: #fff;
@@ -276,7 +281,7 @@ body {
 
 .music-player-t__duration ,
 .music-player-t__current {
-    width: 60px;
+    width: 80px;
 }
 
 .music-player-t__duration {
