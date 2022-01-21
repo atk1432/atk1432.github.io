@@ -138,7 +138,7 @@ const app = {
             e.classList.remove('song-active')
         })
         songList[song.id - 1].classList.add('song-active')
-        songList[song.id -1].scrollIntoView({block: 'center'})
+        // songList[song.id -1].scrollIntoView({block: 'center'})
 
         audio.onloadedmetadata = function() {
             dTime.textContent = app.convertMMSS(audio.duration)
