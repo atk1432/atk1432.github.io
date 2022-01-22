@@ -92,8 +92,9 @@ const app = {
         this.getCurrentSong() // Get song when user click a song
         this.playSong() // Play song when user click button
         this.changeNextSong() // Change a song when user touch button next or back
-        this.randomSong()
-        this.repeatSong()
+        this.randomSong()  // Random song function
+        this.repeatSong()  // Repeat song function
+        this.musicVolume()  // Change volume of music
     },
     convertMMSS: function(seconds) {
         if (seconds < 3600) {
@@ -329,6 +330,20 @@ const app = {
     processChangeIcon: function(element, remove, add) {
         element.classList.remove(remove)
         element.classList.add(add)
+    },
+    musicVolume: function() {
+        const volume = $('.music-volume')
+        const volumeWrap = $('.music-volume-wrap')
+
+        volumeWrap.oninput = function(e) {
+            volume.style.backgroundSize = volume.value + '%'
+            // console.log(audio.volume)
+            audio.volume = volume.value / 100
+        }
+
+        volumeWrap.ontouchmmove = function(e) {
+            e.preventDefault()
+        }
     },
     start: function() {
         this.render()  // Render html playlist
