@@ -53,6 +53,13 @@ const app = {
             artist: 'Marshmello',
             song: 'Silence',
             id: 4
+        },
+        {
+            songUrl: './assets/music/myaudio.mp4',
+            imgUrl: './assets/img/slience.jpg',
+            artist: 'sdfsdf',
+            song: 'sdfsdf',
+            id: 5
         }
     ],
     render: function() {
